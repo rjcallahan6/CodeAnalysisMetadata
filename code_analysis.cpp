@@ -57,8 +57,15 @@ std::string analysis_filename(const analysis_request& request)
  * @param  request Data that forms the request
  * @retval URL
  */
-std::string analysis_url(const analysis_request& request) {
+std::string analysis_url(const analysis_request& request)
+{
+  
+  if (request.option_url != "")
+    return request.option_url;
+  if(request.option_url == "" && request.given_url != "")
+    return request.given_url;
 
+  
     return "";
 }
 
