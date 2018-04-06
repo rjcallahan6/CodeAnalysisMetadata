@@ -14,15 +14,15 @@
  * @retval true   Valid request
  * @retval false  Invalid filename or unable to deduce language
  */
-bool code_analysis(const analysis_request& request) {
+bool code_analysis(const analysis_request& request)
+{
 
-    auto filename = analysis_filename(request);
+  auto filename = analysis_filename(request);
 
-    auto url = analysis_url(request);
+  auto url = analysis_url(request);
 
-    auto language = analysis_language(request, filename);
+  auto language = analysis_language(request, filename);
 
-    // code analysis processing that is not yet implemented
 
     return false;
 }
@@ -31,7 +31,17 @@ bool code_analysis(const analysis_request& request) {
  * @param  request Data that forms the request
  * @retval filename
  */
-std::string analysis_filename(const analysis_request& request) {
+std::string analysis_filename(const analysis_request& request)
+{
+  
+  if (request.option_filename != "")
+    return request.option_filename;
+
+  if(request.option_filename == "" && request.entry_filename != "")
+    return request.entry_filename;
+
+  if (request.option_filename == "" && request.entry_filename == "data" && request.given_filename != "")
+    return request.given_filename;
 
     return "";
 }
