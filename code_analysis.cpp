@@ -7,6 +7,7 @@
 #include "code_analysis.hpp"
 #include "get_language_from_filename.hpp"
 
+#include <iostream>
 #include <string>
 
 /** Generate source analysis based on the request
@@ -22,6 +23,12 @@ bool code_analysis(const analysis_request& request)
   auto url = analysis_url(request);
 
   auto language = analysis_language(request, filename);
+
+  if (language == "" && get_language_from_filename(request.option_filename) == "")
+    std::cerr << "That file extension is not valid." << std::endl;
+
+  if (request.given_filename == "-" && language == "" && filename == "")
+    std::cerr << "Input from stdin requires a valid language to be used." << std::endl;
 
 
     return false;
