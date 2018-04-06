@@ -35,6 +35,12 @@ int main() {
 	assert(code_analysis(request) == false);
 	std::cout << std::endl;
 
+	std::cout << "Bad name: " << std::endl;
+	request.option_filename = "test.wrong";
+	assert(code_analysis(request) == false);
+	std::cout << std::endl;
+	
+
 	
     }
 
