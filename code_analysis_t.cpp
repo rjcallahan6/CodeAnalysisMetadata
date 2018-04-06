@@ -29,7 +29,7 @@ int main() {
         assert(code_analysis(request) == false);
 
 	//Tests
-	std::cout << "From the code_analysis function: " << std::endl;
+	std::cout << "From the code_analysis function: " << std::endl << std::endl;
 	std::cout << "Good name: " << std::endl;
 	std::cout << "test.cpp" << std::endl;
 	request.option_filename = "test.cpp";
@@ -37,19 +37,18 @@ int main() {
 	std::cout << std::endl;
 
 	std::cout << "Bad name: " << std::endl;
-	std::cout << "test.wrong" << std::endl;
 	request.option_filename = "test.wrong";
 	assert(code_analysis(request) == false);
 	std::cout << std::endl;
 
-	std::cout << "filename test" << std::endl;
+	std::cout << "filename test" << std::endl << std::endl << std::endl;
 
 	request.option_filename = "";
 	request.entry_filename = "data";
 	request.given_filename = "test.cpp";
-	std::cout << analysis_filename(request) << std::endl;
+	std::cout << analysis_filename(request) << std::endl << std::endl;
 
-	std::cout << "language test" << std::endl;
+	std::cout << "language test" << std::endl << std::endl;
 
 	std::cout << "Good language: " << std::endl;
 	request.option_language = "C++";
@@ -60,8 +59,8 @@ int main() {
 
 	std::cout << "url test" << std::endl;
 
-	request.given_url = "https://google.com";
-	request.option_url = "www.test.com";
+	request.given_url = "https://www.google.com";
+	request.option_url = "https://www.test.com";
 	std::cout << "Good url: " << std::endl;
 	std::cout<< analysis_url(request) << std::endl;
 	std::cout << "bad url: " << std::endl;
