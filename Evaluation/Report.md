@@ -112,73 +112,73 @@
 
 ## Code
 % srcml code_analysis.cpp code_analysis_t.cpp -o project.xml
-% srcml --xpath="//src:function[src:name='code_analysis']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='code_analysis']" project.xml | srcml
 
-    bool code_analysis(const analysis_request& request)
-    {
-    
-      auto filename = analysis_filename(request);
-    
-      auto url = analysis_url(request);
-    
-      auto language = analysis_language(request, filename);
-    
-      if (language == "" && get_language_from_filename(request.option_filename) == "")
-        std::cerr << "That file extension is not valid." << std::endl;
-    
-      if (request.given_filename == "-" && language == "" && filename == "")
-        std::cerr << "Input from stdin requires a valid language to be used." << std::endl;
-    
-    
-        return false;
-    }
+     1 bool code_analysis(const analysis_request& request)
+     2 {
+     3 
+     4   auto filename = analysis_filename(request);
+     5 
+     6   auto url = analysis_url(request);
+     7 
+     8   auto language = analysis_language(request, filename);
+     9 
+    10   if (language == "" && get_language_from_filename(request.option_filename) == "")
+    11     std::cerr << "That file extension is not valid." << std::endl;
+    12 
+    13   if (request.given_filename == "-" && language == "" && filename == "")
+    14     std::cerr << "Input from stdin requires a valid language to be used." << std::endl;
+    15 
+    16 
+    17     return false;
+    18 }
 
-% srcml --xpath="//src:function[src:name='analysis_filename']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_filename']" project.xml | srcml
 
-    std::string analysis_filename(const analysis_request& request)
-    {
-      
-      if (request.option_filename != "")
-        return request.option_filename;
-    
-      if(request.option_filename == "" && request.entry_filename != "")
-        return request.entry_filename;
-    
-      if (request.option_filename == "" && request.entry_filename == "data" && request.given_filename != "")
-        return request.given_filename;
-    
-        return "";
-    }
+     1 std::string analysis_filename(const analysis_request& request)
+     2 {
+     3   
+     4   if (request.option_filename != "")
+     5     return request.option_filename;
+     6 
+     7   if(request.option_filename == "" && request.entry_filename != "")
+     8     return request.entry_filename;
+     9 
+    10   if (request.option_filename == "" && request.entry_filename == "data" && request.given_filename != "")
+    11     return request.given_filename;
+    12 
+    13     return "";
+    14 }
 
-% srcml --xpath="//src:function[src:name='analysis_url']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_url']" project.xml | srcml
 
-    std::string analysis_url(const analysis_request& request)
-    {
-      
-      if (request.option_url != "")
-        return request.option_url;
-      if(request.option_url == "" && request.given_url != "")
-        return request.given_url;
-    
-      
-        return "";
-    }
+     1 std::string analysis_url(const analysis_request& request)
+     2 {
+     3   
+     4   if (request.option_url != "")
+     5     return request.option_url;
+     6   if(request.option_url == "" && request.given_url != "")
+     7     return request.given_url;
+     8 
+     9   
+    10     return "";
+    11 }
 
-% srcml --xpath="//src:function[src:name='analysis_language']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_language']" project.xml | srcml
 
-    std::string analysis_language(const analysis_request& request, const std::string& filename)
-    {
-    
-      if (request.option_language != "")
-        return request.option_language;
-      else
-        return get_language_from_filename(filename);
-    
-        return "";
-    }
+     1 std::string analysis_language(const analysis_request& request, const std::string& filename)
+     2 {
+     3 
+     4   if (request.option_language != "")
+     5     return request.option_language;
+     6   else
+     7     return get_language_from_filename(filename);
+     8 
+     9     return "";
+    10 }
 
 ## Test Cases 
-% srcml code_analysis_t.cpp --xpath="//src:function[src:name='main']/src:block" | srcml | cat -v
+% srcml code_analysis_t.cpp --xpath="//src:function[src:name='main']/src:block" | srcml
 
     {
     
@@ -192,53 +192,53 @@
             request.option_url      = "";
             request.option_language = "";
     
-    	auto filename = analysis_filename(request);
+        auto filename = analysis_filename(request);
             assert(filename == "");
             assert(analysis_url(request) == "");
             assert(analysis_language(request, filename) == "");
             assert(code_analysis(request) == false);
     
-    	//Tests
-    	std::cout << "From the code_analysis function: " << std::endl << std::endl;
-    	std::cout << "Good name: " << std::endl;
-    	std::cout << "test.cpp" << std::endl;
-    	request.option_filename = "test.cpp";
-    	assert(code_analysis(request) == false);
-    	std::cout << std::endl;
+        //Tests
+        std::cout << "From the code_analysis function: " << std::endl << std::endl;
+        std::cout << "Good name: " << std::endl;
+        std::cout << "test.cpp" << std::endl;
+        request.option_filename = "test.cpp";
+        assert(code_analysis(request) == false);
+        std::cout << std::endl;
     
-    	std::cout << "Bad name: " << std::endl;
-    	request.option_filename = "test.wrong";
-    	assert(code_analysis(request) == false);
-    	std::cout << std::endl;
+        std::cout << "Bad name: " << std::endl;
+        request.option_filename = "test.wrong";
+        assert(code_analysis(request) == false);
+        std::cout << std::endl;
     
-    	std::cout << "filename test" << std::endl << std::endl << std::endl;
+        std::cout << "filename test" << std::endl << std::endl << std::endl;
     
-    	request.option_filename = "";
-    	request.entry_filename = "data";
-    	request.given_filename = "test.cpp";
-    	std::cout << analysis_filename(request) << std::endl << std::endl;
+        request.option_filename = "";
+        request.entry_filename = "data";
+        request.given_filename = "test.cpp";
+        std::cout << analysis_filename(request) << std::endl << std::endl;
     
-    	std::cout << "language test" << std::endl << std::endl;
+        std::cout << "language test" << std::endl << std::endl;
     
-    	std::cout << "Good language: " << std::endl;
-    	request.option_language = "C++";
-    	std::cout << analysis_language(request, analysis_filename(request)) << std::endl;
-    	std::cout << "Bad language: " << std::endl;
-    	request.option_language = "";
-    	std::cout << analysis_language(request, analysis_filename(request)) << std::endl;
+        std::cout << "Good language: " << std::endl;
+        request.option_language = "C++";
+        std::cout << analysis_language(request, analysis_filename(request)) << std::endl;
+        std::cout << "Bad language: " << std::endl;
+        request.option_language = "";
+        std::cout << analysis_language(request, analysis_filename(request)) << std::endl;
     
-    	std::cout << "url test" << std::endl;
+        std::cout << "url test" << std::endl;
     
-    	request.given_url = "https://www.google.com";
-    	request.option_url = "https://www.test.com";
-    	std::cout << "Good url: " << std::endl;
-    	std::cout<< analysis_url(request) << std::endl;
-    	std::cout << "bad url: " << std::endl;
-    	request.option_url = "";
-    	std::cout << analysis_url(request) << std::endl;
-    	
-    	
-    	
+        request.given_url = "https://www.google.com";
+        request.option_url = "https://www.test.com";
+        std::cout << "Good url: " << std::endl;
+        std::cout<< analysis_url(request) << std::endl;
+        std::cout << "bad url: " << std::endl;
+        request.option_url = "";
+        std::cout << analysis_url(request) << std::endl;
+        
+        
+        
         }
     
         return 0;
@@ -266,7 +266,10 @@
 
     g++ -std=c++11 -c code_analysis_t.cpp
     g++ -std=c++11 -c code_analysis.cpp
+    g++ -std=c++11 -c get_language_from_filename.cpp
     g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    g++ -std=c++11 -c get_language_from_filename_t.cpp
+    g++ get_language_from_filename_t.o get_language_from_filename.o -o get_language_from_filename_t
 
 % git show
 
@@ -311,11 +314,13 @@
      
          return 0;
 
+
 ### Commit f06e64
 % git checkout -q f06e64  
 % make  
 
-    make: Nothing to be done for `all'.
+    g++ -std=c++11 -c code_analysis_t.cpp
+    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
 
 % git show
 
@@ -342,6 +347,7 @@
      	
          }
      
+
 
 ### Commit 9b55c6
 % git checkout -q 9b55c6  
@@ -402,6 +408,7 @@
      
          return "";
      }
+
 
 ### Commit 20e94b
 % git checkout -q 20e94b  
@@ -466,6 +473,7 @@ Aborting
          return "";
      }
 
+
 ### Commit 7cdf09
 % git checkout -q 7cdf09  
 % make  
@@ -529,6 +537,7 @@ Aborting
          return "";
      }
 
+
 ### Commit a525ff
 % git checkout -q a525ff  
 % make  
@@ -548,6 +557,7 @@ Aborting
     deleted file mode 100755
     index bf4fbce..0000000
     Binary files a/code_analysis_t and /dev/null differ
+
 
 ### Commit a5f294
 % git checkout -q a5f294  
@@ -590,12 +600,12 @@ Aborting
          return false;
      }
 
+
 ### Commit 7d08ce
 % git checkout -q 7d08ce  
 % make  
 
-    g++ -std=c++11 -c code_analysis.cpp
-    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    make: Nothing to be done for `all'.
 
 % git show
 
@@ -627,11 +637,13 @@ Aborting
      }
      
 
+
 ### Commit f61a5f
 % git checkout -q f61a5f  
 % make  
 
-    make: Nothing to be done for `all'.
+    g++ -std=c++11 -c code_analysis.cpp
+    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
 
 % git show
 
@@ -660,6 +672,7 @@ Aborting
      
          return "";
      }
+
 
 ### Commit 2c6451
 % git checkout -q 2c6451  
